@@ -1,9 +1,10 @@
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask_login import login_user, logout_user, current_user, login_required
+from datetime import datetime
 from app import app, db, lm, oid
 from .forms import LoginForm, EditForm
 from .models import User
-from datetime import datetime
+
 
 @lm.user_loader
 def load_user(id):
@@ -86,7 +87,7 @@ def logout():
 @login_required
 def user(nickname):
     user = User.query.filter_by(nickname=nickname).first()
-    if user == None:
+    if user is None:
         flash('User %s not found.' % nickname)
         return redirect(url_for('index'))
     posts = [
